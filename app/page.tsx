@@ -23,6 +23,7 @@ export default function Home() {
     isTracking,
     isInitialized,
     hasPosition,
+    needsPermission,
     startTracking,
   } = useGeolocation();
   const { unit, setUnit, toggleUnit } = useSpeedUnit();
@@ -82,6 +83,38 @@ export default function Home() {
             isSupported={isSupported}
             onRetry={startTracking}
           />
+        ) : needsPermission ? (
+          <div className="flex flex-col items-center gap-6 px-6 text-center">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="40"
+                height="40"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="opacity-50"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polygon points="12 6 12 12 16 14" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold">Ready to track your speed?</h2>
+              <p className="mt-2 max-w-xs text-sm opacity-70">
+                Tap below to enable GPS and see how fast you&apos;re going.
+              </p>
+            </div>
+            <button
+              onClick={startTracking}
+              className="rounded-full bg-foreground px-8 py-3 font-medium text-background transition-opacity hover:opacity-80"
+            >
+              Enable GPS
+            </button>
+          </div>
         ) : (
           <div className="flex flex-col items-center gap-2">
             <SpeedDisplay speed={speed} unit={unit} />

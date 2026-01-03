@@ -12,6 +12,7 @@ export interface GeolocationState {
   isSupported: boolean;
   hasPosition: boolean; // Whether we've received at least one position update
   isInitialized: boolean; // Whether we've checked support and started
+  needsPermission: boolean; // Whether we need user gesture to request permission
 }
 
 const initialState: GeolocationState = {
@@ -23,6 +24,7 @@ const initialState: GeolocationState = {
   isSupported: true,
   hasPosition: false,
   isInitialized: false,
+  needsPermission: false,
 };
 
 export function useGeolocation(): GeolocationState & {
@@ -63,6 +65,7 @@ export function useGeolocation(): GeolocationState & {
       isTracking: true,
       error: null,
       isInitialized: true,
+      needsPermission: false,
     }));
 
     watchIdRef.current = navigator.geolocation.watchPosition(
@@ -102,9 +105,71 @@ export function useGeolocation(): GeolocationState & {
     setState((prev) => ({ ...prev, isTracking: false }));
   }, []);
 
-  // Start tracking on mount
+  // Check permission status on mount (without triggering prompt)
   useEffect(() => {
-    startTracking();
+    const checkPermission = async () => {
+      const isSupported =
+        typeof navigator !== "undefined" && "geolocation" in navigator;
+
+      if (!isSupported) {
+        setState((prev) => ({
+          ...prev,
+          isSupported: false,
+          isInitialized: true,
+        }));
+        return;
+      }
+
+      // Check if we can query permission status (not supported on all browsers)
+      if (navigator.permissions && navigator.permissions.query) {
+        try {
+          const permission = await navigator.permissions.query({
+            name: "geolocation",
+          });
+
+          if (permission.state === "granted") {
+            // Permission already granted, start tracking
+            startTracking();
+          } else if (permission.state === "denied") {
+            // Permission denied
+            setState((prev) => ({
+              ...prev,
+              isInitialized: true,
+              error: {
+                code: 1,
+                message: "Location access denied",
+                PERMISSION_DENIED: 1,
+                POSITION_UNAVAILABLE: 2,
+                TIMEOUT: 3,
+              } as GeolocationPositionError,
+            }));
+          } else {
+            // Permission is 'prompt' - need user gesture
+            setState((prev) => ({
+              ...prev,
+              isInitialized: true,
+              needsPermission: true,
+            }));
+          }
+        } catch {
+          // permissions.query not supported, need user gesture
+          setState((prev) => ({
+            ...prev,
+            isInitialized: true,
+            needsPermission: true,
+          }));
+        }
+      } else {
+        // permissions API not supported, need user gesture
+        setState((prev) => ({
+          ...prev,
+          isInitialized: true,
+          needsPermission: true,
+        }));
+      }
+    };
+
+    checkPermission();
     return () => stopTracking();
   }, [startTracking, stopTracking]);
 
