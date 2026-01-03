@@ -14,7 +14,7 @@ function getErrorMessage(
     return {
       title: "GPS Not Available",
       description:
-        "Your device doesn't support GPS. Try opening this on a mobile phone.",
+        "Your device or browser doesn't support GPS location services.",
     };
   }
 
