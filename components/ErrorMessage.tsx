@@ -30,7 +30,7 @@ function getErrorMessage(
       return {
         title: "Location Access Denied",
         description:
-          "Please allow location access in your browser settings to measure speed.",
+          "Please enable location access in your browser or device settings, then tap Try Again.",
       };
     case error.POSITION_UNAVAILABLE:
       return {

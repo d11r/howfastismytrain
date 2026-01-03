@@ -120,47 +120,41 @@ export function useGeolocation(): GeolocationState & {
         return;
       }
 
-      // Check if we can query permission status (not supported on all browsers)
+      // Check if we can query permission status
+      // Note: Safari doesn't support permissions.query for geolocation
+      let permissionState: PermissionState | null = null;
+
       if (navigator.permissions && navigator.permissions.query) {
         try {
           const permission = await navigator.permissions.query({
             name: "geolocation",
           });
-
-          if (permission.state === "granted") {
-            // Permission already granted, start tracking
-            startTracking();
-          } else if (permission.state === "denied") {
-            // Permission denied
-            setState((prev) => ({
-              ...prev,
-              isInitialized: true,
-              error: {
-                code: 1,
-                message: "Location access denied",
-                PERMISSION_DENIED: 1,
-                POSITION_UNAVAILABLE: 2,
-                TIMEOUT: 3,
-              } as GeolocationPositionError,
-            }));
-          } else {
-            // Permission is 'prompt' - need user gesture
-            setState((prev) => ({
-              ...prev,
-              isInitialized: true,
-              needsPermission: true,
-            }));
-          }
+          permissionState = permission.state;
         } catch {
-          // permissions.query not supported, need user gesture
-          setState((prev) => ({
-            ...prev,
-            isInitialized: true,
-            needsPermission: true,
-          }));
+          // permissions.query for geolocation not supported (e.g., Safari)
+          permissionState = null;
         }
+      }
+
+      if (permissionState === "granted") {
+        // Permission already granted, start tracking automatically
+        startTracking();
+      } else if (permissionState === "denied") {
+        // Permission explicitly denied
+        setState((prev) => ({
+          ...prev,
+          isInitialized: true,
+          error: {
+            code: 1,
+            message: "Location access denied",
+            PERMISSION_DENIED: 1,
+            POSITION_UNAVAILABLE: 2,
+            TIMEOUT: 3,
+          } as GeolocationPositionError,
+        }));
       } else {
-        // permissions API not supported, need user gesture
+        // Permission is 'prompt' OR we couldn't check (Safari)
+        // Show the "Enable GPS" button to require user gesture
         setState((prev) => ({
           ...prev,
           isInitialized: true,
