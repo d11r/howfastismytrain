@@ -1,3 +1,5 @@
+import { MIN_SPEED_THRESHOLD } from "./constants";
+
 export type SpeedUnit = "kmh" | "mph";
 
 /**
@@ -23,13 +25,13 @@ export function convertSpeed(ms: number, unit: SpeedUnit): number {
 
 /**
  * Format speed for display (no decimals when >= 10, one decimal below)
+ * Speeds below MIN_SPEED_THRESHOLD are shown as 0 to filter GPS noise
  */
 export function formatSpeed(ms: number | null, unit: SpeedUnit): string {
-  if (ms === null) return "--";
+  if (ms === null || ms < MIN_SPEED_THRESHOLD) return "0";
 
   const converted = convertSpeed(ms, unit);
 
-  if (converted < 0.5) return "0";
   if (converted >= 10) return Math.round(converted).toString();
   return converted.toFixed(1);
 }

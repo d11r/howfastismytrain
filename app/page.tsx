@@ -48,9 +48,9 @@ export default function Home() {
     }
     if (speed === null) {
       return {
-        color: "yellow",
-        message: "No speed data",
-        detail: "GPS speed requires movement. Desktop devices often lack GPS hardware.",
+        color: "green",
+        message: "GPS Active",
+        detail: "Start moving to see your speed",
       };
     }
     return { color: "green", message: "GPS Active", detail: null };
