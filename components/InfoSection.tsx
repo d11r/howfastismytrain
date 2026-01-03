@@ -8,9 +8,10 @@ export function InfoSection() {
         <div>
           <h2 className="mb-3 text-lg font-semibold">How it works</h2>
           <p className="text-sm leading-relaxed opacity-70">
-            This app uses your device&apos;s GPS to measure your current speed
-            in real-time. The speed data comes directly from the GPS chip in
-            your phone—the same technology that powers navigation apps.
+            Hop on a train, open this app, and watch your speed in real-time.
+            We use your phone&apos;s GPS to measure how fast you&apos;re
+            moving—the same technology that powers navigation apps. Works on
+            buses, cars, and ferries too!
           </p>
         </div>
 
@@ -23,7 +24,7 @@ export function InfoSection() {
               <span>Works best outdoors with a clear view of the sky</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="mt-1">🚶</span>
+              <span className="mt-1">🚂</span>
               <span>
                 Speed readings may be inaccurate when stationary or moving very
                 slowly
@@ -37,10 +38,9 @@ export function InfoSection() {
               </span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="mt-1">🏢</span>
+              <span className="mt-1">🚇</span>
               <span>
-                Indoor or underground locations (like subways) may have limited
-                GPS signal
+                Tunnels and underground sections may have limited GPS signal
               </span>
             </li>
           </ul>
@@ -50,7 +50,7 @@ export function InfoSection() {
         <div>
           <h2 className="mb-3 text-lg font-semibold">About</h2>
           <p className="text-sm leading-relaxed opacity-70">
-            Free, ad-free, and{" "}
+            A simple speedometer for curious train commuters. Free, ad-free, and{" "}
             <a
               href="https://github.com/d11r/howfastismytrain"
               target="_blank"
@@ -59,8 +59,11 @@ export function InfoSection() {
             >
               open source
             </a>
-            . Built for curious commuters who want to know how fast their train
-            is going.
+            .
+          </p>
+          <p className="mt-2 text-sm leading-relaxed opacity-50">
+            This is a hobby project for fun—don&apos;t rely on it for anything
+            serious.
           </p>
         </div>
 
@@ -121,6 +124,18 @@ export function InfoSection() {
               Threads
             </a>
           </div>
+          <p className="mt-4 text-sm opacity-40">
+            Vibe coded with{" "}
+            <a
+              href="https://claude.ai/code"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:opacity-70"
+            >
+              Claude Code
+            </a>{" "}
+            + Opus 4.5 in &lt;30 mins
+          </p>
         </div>
       </div>
     </section>
