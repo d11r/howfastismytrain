@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background -->
+  <rect width="512" height="512" fill="#22c55e" rx="64"/>
+
+  <!-- Train Car Body -->
+  <rect x="96" y="180" width="320" height="152" fill="#ffffff" rx="16"/>
+
+  <!-- Windows -->
+  <rect x="120" y="204" width="64" height="64" fill="#22c55e" rx="8"/>
+  <rect x="208" y="204" width="64" height="64" fill="#22c55e" rx="8"/>
+  <rect x="296" y="204" width="64" height="64" fill="#22c55e" rx="8"/>
+
+  <!-- Wheels -->
+  <circle cx="160" cy="360" r="32" fill="#333333"/>
+  <circle cx="352" cy="360" r="32" fill="#333333"/>
+  <circle cx="160" cy="360" r="16" fill="#666666"/>
+  <circle cx="352" cy="360" r="16" fill="#666666"/>
+
+  <!-- Speed Lines -->
+  <rect x="48" y="236" width="32" height="4" fill="#ffffff" opacity="0.8"/>
+  <rect x="56" y="256" width="24" height="4" fill="#ffffff" opacity="0.6"/>
+  <rect x="64" y="276" width="16" height="4" fill="#ffffff" opacity="0.4"/>
+</svg>
